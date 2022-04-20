@@ -15,30 +15,27 @@ import com.android.volley.toolbox.Volley
 import com.stfalcon.chatkit.commons.ImageLoader
 import com.stfalcon.chatkit.messages.MessageHolders
 import com.stfalcon.chatkit.messages.MessageInput
-import com.stfalcon.chatkit.messages.MessagesList
 import com.stfalcon.chatkit.messages.MessagesListAdapter
+import it.sevensolutions.chatbot.databinding.FragmentChatBinding
 import it.sevensolutions.chatbot.models.Message
 import it.sevensolutions.chatbot.models.User
 import org.json.JSONException
 import org.json.JSONObject
 import java.util.*
 
-
-class ChatFragment : Fragment(), MessageInput.InputListener {
-    private val url = "https://imola-bot4me.herokuapp.com/api/chatterbot/"
+class ChatFragment : Fragment() {
     private lateinit var requestQueue: RequestQueue
-
-    private val user = User("user", "user", "user")
-    private val chatbot = User("chatbot", "chatbot", "bot_icon")
 
     private var imageLoader: ImageLoader = ImageLoader { imageView, url, _ ->
         val resID = resources.getIdentifier(url, "drawable", requireActivity().packageName)
         imageView.setImageResource(resID)
     }
 
+    private var _binding: FragmentChatBinding? = null
+    private val binding get() = _binding!!
+
     private var messagesAdapter: MessagesListAdapter<Message>? = null
     private lateinit var sessionID: String
-    private lateinit var messagesList: MessagesList
 
     private val successListener =
         Response.Listener { response: JSONObject ->
@@ -74,13 +71,8 @@ class ChatFragment : Fragment(), MessageInput.InputListener {
             val text: MutableMap<String?, String?> = ArrayMap()
             text["text"] = input.toString()
             val request = JSONObject(text as Map<*, *>)
-            val objectRequest = object : JsonObjectRequest(
-                Method.POST,
-                url,
-                request,
-                successListener,
-                errorListener
-            ) {
+
+            val objectRequest = object : JsonObjectRequest(Method.POST, url, request, successListener, errorListener) {
                 override fun getHeaders(): MutableMap<String, String> {
                     val headers = mutableMapOf<String, String>()
 
@@ -88,7 +80,6 @@ class ChatFragment : Fragment(), MessageInput.InputListener {
                     val apiKey = sharedPreferences.getString("api_key", "")
 
                     headers["Authorization"] = apiKey!!
-
                     headers["Content-Type"] = "application/json"
                     headers["Cookie"] = "sessionid=$sessionID"
                     return headers
@@ -117,8 +108,9 @@ class ChatFragment : Fragment(), MessageInput.InputListener {
         return true
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_chat, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        _binding = FragmentChatBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -126,7 +118,6 @@ class ChatFragment : Fragment(), MessageInput.InputListener {
 
         setHasOptionsMenu(true)
 
-        messagesList = view.findViewById(R.id.messagesList)
         initAdapter()
 
         val input: MessageInput = view.findViewById(R.id.input)
@@ -134,13 +125,7 @@ class ChatFragment : Fragment(), MessageInput.InputListener {
 
         requestQueue = Volley.newRequestQueue(requireContext())
 
-        val objectRequest = object : JsonObjectRequest(
-            Method.GET,
-            url,
-            null,
-            successListener,
-            errorListener
-        ) {
+        val objectRequest = object : JsonObjectRequest(Method.GET, url, null, successListener, errorListener) {
             override fun getHeaders(): MutableMap<String, String> {
                 val headers = mutableMapOf<String, String>()
                 headers["Content-Type"] = "application/json"
@@ -180,12 +165,18 @@ class ChatFragment : Fragment(), MessageInput.InputListener {
 
     private fun initAdapter() {
         messagesAdapter = MessagesListAdapter<Message>("user", MessageHolders(), imageLoader)
-        messagesList.setAdapter(messagesAdapter!!)
+        binding.messagesList.setAdapter(messagesAdapter!!)
     }
 
-    override fun onSubmit(input: CharSequence?): Boolean {
-        if (input.isNullOrEmpty())
-            return false
-        return true
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+
+    companion object {
+        const val url = "https://imola-bot4me.herokuapp.com/api/chatterbot/"
+        val user = User("user", "user", "user")
+        val chatbot = User("chatbot", "chatbot", "bot_icon")
     }
 }
