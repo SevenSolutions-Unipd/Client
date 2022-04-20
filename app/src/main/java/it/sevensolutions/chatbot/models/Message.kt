@@ -11,8 +11,6 @@ class Message(private val id: String,
     IMessage, MessageContentType.Image, MessageContentType {
 
     private var image: Image? = null
-    var voice: Voice? = null
-
 
     override fun getId(): String {
         return id
@@ -34,12 +32,7 @@ class Message(private val id: String,
         return if (image == null) null else image!!.url
     }
 
-    fun setImage(image: Image?) {
-        this.image = image
-    }
-
     class Image(val url: String)
-    class Voice(val url: String, val duration: Int)
 
 
 }

@@ -1,22 +1,21 @@
 package it.sevensolutions.chatbot
 
 import android.app.Dialog
+import android.content.Intent
 import android.os.Bundle
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageButton
+import androidx.appcompat.widget.AppCompatImageButton
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.DialogFragment
 
 class ApiKeyDialogFragment : DialogFragment() {
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_api_key_dialog, container, false)
     }
 
@@ -32,16 +31,12 @@ class ApiKeyDialogFragment : DialogFragment() {
 
         view.findViewById<ConstraintLayout>(R.id.apiKeyDialogLayout).clipToOutline = true
 
-        val settings = view.findViewById<Button>(R.id.button_settings)
+        val settings = view.findViewById<ImageButton>(R.id.button_settings)
         settings.setOnClickListener {
             dismiss()
 
-            parentFragmentManager
-                .beginTransaction()
-                .setReorderingAllowed(true)
-                .addToBackStack("SettingsFragment")
-                .replace(R.id.frag_container, SettingsFragment(), "SettingsFragment")
-                .commit()
+            val intent = Intent(activity, SettingsActivity::class.java)
+            startActivity(intent)
         }
     }
 

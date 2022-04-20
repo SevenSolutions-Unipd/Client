@@ -11,6 +11,7 @@
         android:layout_height="match_parent"
         android:layout_above="@+id/input"
         app:outcomingDefaultBubbleColor="@color/green"
+        app:textAutoLink="all"
         tools:ignore="SpeakableTextPresentCheck" />
 
     <View
@@ -26,15 +27,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        app:attachmentButtonDefaultBgColor="@color/green"
-        app:attachmentButtonDefaultBgPressedColor="#38713D"
-        app:attachmentButtonDefaultIconColor="@color/white"
-        app:attachmentButtonDefaultIconPressedColor="@color/white"
         app:inputButtonDefaultBgColor="@color/green"
         app:inputButtonDefaultBgPressedColor="#38713D"
         app:inputButtonDefaultIconColor="@color/white"
         app:inputButtonDefaultIconPressedColor="@color/white"
         app:inputHint="@string/hint_enter_a_message"
-        app:showAttachmentButton="true" />
+        app:showAttachmentButton="false" />
 
 </RelativeLayout>

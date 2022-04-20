@@ -17,7 +17,7 @@
         android:layout_height="wrap_content"
         android:autoLink="web"
         android:text="@string/apikey_not_present"
-        android:textAlignment="center"
+        android:textAlignment="viewStart"
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/button_settings"
         app:layout_constraintEnd_toEndOf="parent"
@@ -27,13 +27,13 @@
         app:layout_constraintVertical_bias="0.44"
         app:layout_constraintVertical_chainStyle="spread" />
 
-    <Button
+    <ImageButton
         android:id="@+id/button_settings"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:text="@string/settings"
-        android:textSize="20sp"
+        android:textSize="20dp"
+        android:src="@android:drawable/ic_menu_preferences"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -1,21 +1,20 @@
 package it.sevensolutions.chatbot
 
-import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentActivity
+import android.os.Bundle
 import androidx.fragment.app.add
 import androidx.fragment.app.commit
 
-class MainActivity : AppCompatActivity() {
+class SettingsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_settings)
 
         if (savedInstanceState == null) {
             supportFragmentManager.commit {
                 setReorderingAllowed(true)
-                addToBackStack("ChatFragment")
-                add<ChatFragment>(R.id.frag_container, "ChatFragment")
+                addToBackStack("SettingsFragment")
+                add<SettingsFragment>(R.id.frag_container, "SettingsFragment")
             }
         }
 
