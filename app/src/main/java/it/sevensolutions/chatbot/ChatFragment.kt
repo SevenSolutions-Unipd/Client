@@ -24,9 +24,7 @@ import org.json.JSONObject
 import java.util.*
 
 
-class ChatFragment : Fragment(),
-    MessageInput.InputListener {
-
+class ChatFragment : Fragment(), MessageInput.InputListener {
     private val url = "https://imola-bot4me.herokuapp.com/api/chatterbot/"
     private lateinit var requestQueue: RequestQueue
 
@@ -87,10 +85,9 @@ class ChatFragment : Fragment(),
                     val headers = mutableMapOf<String, String>()
 
                     val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
-                    val apiKey = sharedPreferences.getString("api_key", " ")
+                    val apiKey = sharedPreferences.getString("api_key", "")
 
-                    if (apiKey!!.isNotEmpty())
-                        headers["Authorization"] = apiKey
+                    headers["Authorization"] = apiKey!!
 
                     headers["Content-Type"] = "application/json"
                     headers["Cookie"] = "sessionid=$sessionID"
@@ -169,9 +166,9 @@ class ChatFragment : Fragment(),
         requestQueue.add(objectRequest)
 
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
-        val apiKey = sharedPreferences.getString("api_key", " ")
+        val apiKey = sharedPreferences.getString("api_key", "")
 
-        if (apiKey!!.isEmpty()) {
+        if (apiKey.isNullOrEmpty()) {
             val transaction = parentFragmentManager
                 .beginTransaction()
                 .setReorderingAllowed(true)
