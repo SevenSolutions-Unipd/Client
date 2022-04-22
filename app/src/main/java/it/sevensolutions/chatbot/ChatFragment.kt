@@ -68,29 +68,33 @@ class ChatFragment : Fragment() {
 
     private val listener =
         MessageInput.InputListener { input ->
-            val text: MutableMap<String?, String?> = ArrayMap()
-            text["text"] = input.toString()
-            val request = JSONObject(text as Map<*, *>)
 
-            val objectRequest = object : JsonObjectRequest(Method.POST, url, request, successListener, errorListener) {
-                override fun getHeaders(): MutableMap<String, String> {
-                    val headers = mutableMapOf<String, String>()
+            if(input.isNotEmpty()) {
+                val text: MutableMap<String?, String?> = ArrayMap()
+                text["text"] = input.toString()
+                val request = JSONObject(text as Map<*, *>)
 
-                    val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
-                    val apiKey = sharedPreferences.getString("api_key", "")
+                val objectRequest = object : JsonObjectRequest(Method.POST, url, request, successListener, errorListener) {
+                    override fun getHeaders(): MutableMap<String, String> {
+                        val headers = mutableMapOf<String, String>()
 
-                    headers["Authorization"] = apiKey!!
-                    headers["Content-Type"] = "application/json"
-                    headers["Cookie"] = "sessionid=$sessionID"
-                    return headers
+                        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
+                        val apiKey = sharedPreferences.getString("api_key", "")
+
+                        headers["Authorization"] = apiKey!!
+                        headers["Content-Type"] = "application/json"
+                        headers["Cookie"] = "sessionid=$sessionID"
+                        return headers
+                    }
                 }
+
+                requestQueue.add(objectRequest)
+
+                val message = Message("user_input", user, input.toString(), Date())
+                messagesAdapter!!.addToStart(message, true)
+                return@InputListener true
             }
-
-            requestQueue.add(objectRequest)
-
-            val message = Message("user_input", user, input.toString(), Date())
-            messagesAdapter!!.addToStart(message, true)
-            return@InputListener true
+            return@InputListener false
         }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -146,6 +150,7 @@ class ChatFragment : Fragment() {
                 return super.parseNetworkResponse(response)
             }
         }
+
 
         objectRequest.retryPolicy = DefaultRetryPolicy(10000, 1, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT)
         requestQueue.add(objectRequest)
