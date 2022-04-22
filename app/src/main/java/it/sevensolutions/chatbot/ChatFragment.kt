@@ -9,7 +9,10 @@ import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.preference.PreferenceManager
-import com.android.volley.*
+import com.android.volley.DefaultRetryPolicy
+import com.android.volley.NetworkResponse
+import com.android.volley.RequestQueue
+import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.stfalcon.chatkit.commons.ImageLoader
