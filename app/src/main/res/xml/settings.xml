@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+        <EditTextPreference
+            app:key="api_key"
+            app:summary="Chiave di accesso per accedere alle funzionalità del chatbot"
+            app:title="Chiave di accesso"
+            app:useSimpleSummaryProvider="true"
+            android:icon="@android:drawable/ic_lock_lock"
+            android:autoLink="all"
+            android:clickable="true"
+            android:dialogMessage="@string/preferenceDialog" />
+
+        <Preference android:title="Link per accesso"
+            android:icon="@drawable/logo_imola">
+                <intent android:action="android.intent.action.VIEW"
+                    android:data="https://www.imolainformatica.it" />
+        </Preference>
+</PreferenceScreen>
