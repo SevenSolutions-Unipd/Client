@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.text.Html
 import android.util.ArrayMap
 import android.view.*
 import android.widget.Toast
@@ -43,7 +44,13 @@ class ChatFragment : Fragment() {
     private val successListener =
         Response.Listener { response: JSONObject ->
             try {
-                val reply = response.getString("text")
+                var reply = response.getString("text")
+
+                if(reply.contains("https")) {
+                    reply = reply.replace("di <a href=\"", "")
+                    reply = reply.replace("/\" target=\"_blank\">Imola Informatica</a>","")
+                }
+
                 val message =
                     Message(
                         "chatbot_output",
